@@ -1,21 +1,16 @@
 package Graph;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
-public class GraphFirst {
+public class AllPath {
 
     static class Edge {
-
-        int src;
-        int dest;
-        int wei;
+        int src, dest, wt;
 
         public Edge(int s, int d, int w) {
             this.src = s;
             this.dest = d;
-            this.wei = w;
+            this.wt = w;
         }
     }
 
@@ -47,68 +42,34 @@ public class GraphFirst {
         graph[6].add(new Edge(6, 5, -1));
 
     }
-static boolean[] visit = new boolean[7];
 
-    public static void DFS(ArrayList<Edge>[] graph, int src, int tar, ArrayList<Integer> path){
-      if(src==tar){
+
+    public static void  AllPathFromSrcToTar(ArrayList<Edge>[] graph, int src, int tar,boolean[] visit, ArrayList<Integer> path){
+        path.add(src);
+        visit[src]=true;
+        if(src==tar){
         System.out.println(path);
         return;
     }
         for(int i=0; i<graph[src].size(); i++){
             Edge e = graph[src].get(i);
-            if(visit[e.dest]==false){
-                path.add(e.dest);
-                visit[e.dest]=true;
-                DFS(graph,e.dest,tar,path);
+            if(!visit[e.dest]){
+                AllPathFromSrcToTar(graph,e.dest,tar,visit,path);
                 visit[e.dest]=false;
                 path.remove(path.size()-1);
             }
         } 
         return;
     }
-
-    public static void BFS(ArrayList<Edge> graph[], int V){
-        Queue<Integer> q = new LinkedList<>();
-        boolean vis[] = new boolean[V];
-        q.add(0);
-        while(!q.isEmpty()){
-            int curr= q.remove();
-            if(vis[curr]==false){
-                System.out.println(curr);
-                vis[curr]=true;
-                // visit neighbour and add to queue;
-                for(int i=0; i<graph[curr].size();i++){
-                    Edge e = graph[curr].get(i);
-                    q.add(e.dest);
-                }
-            }
-
-        }
-
-    }
-
     public static void main(String[] args) {
         int v = 7;
         ArrayList<Edge>[] graph = new ArrayList[v];
         createGraph(graph);
-        // print all neighour
-        // for (int i = 0; i < graph[2].size(); i++) {
-        //     Edge e = graph[2].get(i);
-        //     System.out.println(e.dest + " , " + e.wei);
-        // }
-
-        // Breadth first Search
-        // BFS(graph,v);
-
-        // Deapth first Search
         System.out.println("Print all paths from src=0 to tar=5");
         ArrayList<Integer> path = new ArrayList<>();
+        boolean[] visit = new boolean[7];
         int src=0;
         int tar=5;
-        visit[src]=true;
-        path.add(src);
-        DFS(graph,src,tar,path);
-
+        AllPathFromSrcToTar(graph,src,tar,visit,path);
     }
-
 }
