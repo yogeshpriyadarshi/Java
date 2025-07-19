@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 public class Dijkstra {
-
     static class Edge{
-        int src;
-        int dest;
-        int wt;
-
+        int src, dest, wt;
+     
         public Edge(int s, int d, int w) {
             this.src = s;
             this.dest = d;
@@ -17,6 +14,19 @@ public class Dijkstra {
         }
     }
 
+    static class Pair implements Comparable<Pair>{
+        int node;
+        int dis;
+
+        public Pair(int n, int d) {
+            this.node = n;
+            this.dis = d;
+        }  
+        @Override
+         public int compareTo(Pair p2) {
+            return Integer.compare(this.dis, p2.dis);
+            }
+    }
 
     static void createGraph(ArrayList<Edge>[] graph){
         for(int i=0; i<graph.length; i++){
@@ -36,19 +46,7 @@ public class Dijkstra {
         graph[4].add( new Edge(4, 5, 5));
 
     }
-     static class Pair implements Comparable<Pair>{
-        int node;
-        int dis;
 
-        public Pair(int n, int d) {
-            this.node = n;
-            this.dis = d;
-        }  
-        @Override
-         public int compareTo(Pair p2) {
-            return Integer.compare(this.dis, p2.dis);
-            }
-    }
 
     public static int[] dijkstra(ArrayList<Edge>[] graph, int src){
         int n=graph.length;
@@ -70,6 +68,7 @@ public class Dijkstra {
                 Edge e = graph[node].get(i);
                 int u = e.src;
                 int v = e.dest;
+                // Edge Relaxation
                 if(dis[v] > e.wt + dis[u] ){
                     dis[v]= e.wt + dis[u];
                     pq.add( new Pair(v,dis[v]));
@@ -88,9 +87,6 @@ public class Dijkstra {
         int[] ans = dijkstra(graph, 0);
         for(int i=0; i<6; i++){
             System.out.println(ans[i]);
-        }
-
-        
-    }
-    
+        }   
+    }   
 }
